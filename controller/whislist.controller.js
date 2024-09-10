@@ -11,11 +11,11 @@ exports.addwhislist = async(req,res)=>{
         if (!product) {
            return res.json({message:"product is not available in whislist list..."});
         }
-        let whislist = await WhislistService.favFindOne({product_item:req.body.product_item,user:req.user._id});
+        let whislist = await WhislistService.whishlistFindOne({product_item:req.body.product_item,user:req.user._id});
         if (whislist) {
             return res.json({message:"items is already exist in list..."});
         }
-        whislist = await WhislistService.favCreate({
+        whislist = await WhislistService.whishlistCreate({
             ...req.body,
             user:req.user._id,
         });

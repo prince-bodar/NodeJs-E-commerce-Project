@@ -5,17 +5,15 @@ const orderService = new Orderservice();
 
 exports.addOrder = async(req,res)=>{
     try {
-        let {fullName,address,phoneNo,zipCode,country,city,district} = req.body;
+        let {fullName,address,phoneNo,city} = req.body;
         let cartItem = await Cart.find({user:req.user._id,isDelete:false}).populate('cartItem');
-        console.log(cartItem);
-        // if (cartItem.items == null) {
-        //    return res.json({message:"user have not any cart..."});
-        // }
+       
         let order = cartItem.map((item)=>({
             cartItem : item.cartItem._id,
             quantity: item.quantity,
             price: item.cartItem.price
         }))
+        
         console.log(order);
         let totalPrice  = order.reduce(((total,item)=>total+=(item.quantity * item.price)),0);
         console.log(totalPrice);
@@ -25,7 +23,7 @@ exports.addOrder = async(req,res)=>{
            items:order,
            totalAmount : totalPrice,
            ship_address:{
-            fullName,address,phoneNo,zipCode,country,city,district
+            fullName,address,phoneNo,city
            }
         })
         newOrder.save();
@@ -39,7 +37,7 @@ exports.addOrder = async(req,res)=>{
 }
 
 exports.updateOrder = async(req, res) => {
-    let { fullName, address,phoneNo, zipCode, country, district, city } = req.body;
+    let { fullName, address,phoneNo, city } = req.body;
     try {
         let order = await Order.findOne({user:req.user._id,isDelete:false});
         if (!order) {
@@ -49,9 +47,6 @@ exports.updateOrder = async(req, res) => {
             fullName: fullName,
             address: address,
             phoneNo:phoneNo,
-            zipCode: zipCode,
-            country: country,
-            district: district,
             city: city
         };
        await order.save();

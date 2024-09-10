@@ -1,12 +1,12 @@
 const whislist = require('../model/whislist.model');
 
 module.exports = class whislistService {
-    favCreate = async(body) =>{
+    whishlistCreate = async(body) =>{
         return await whislist.create(body);
     }
 
     // get specific user
-    favFindOne = async(body)=>{
+    whishlistFindOne = async(body)=>{
         return await whislist.findOne(body);
     }
     
